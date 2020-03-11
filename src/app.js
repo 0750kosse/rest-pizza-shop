@@ -1,15 +1,14 @@
 const express = require('express');
-var bodyParser = require('body-parser')
 const app = express();
+const bodyParser = require('body-parser')
 
+const productRoutes = require('../api/routes/menu');
+const orderRoutes = require('../api/routes/order')
 
 app.use(bodyParser.json());
 
-app.use((req, res, next) => {
-  res.status(200).json({
-    message: "it works"
-  })
-})
+app.use('/products', productRoutes);
+app.use('/order', orderRoutes);
 
 const port = process.env.PORT || 3000;
 
