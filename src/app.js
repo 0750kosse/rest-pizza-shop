@@ -9,7 +9,7 @@ const orderRoutes = require('../api/routes/order')
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 
-app.use('/products', productRoutes);
+app.use('/menu', productRoutes);
 app.use('/order', orderRoutes);
 
 app.use((req, res, next) => {
