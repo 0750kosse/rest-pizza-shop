@@ -1,10 +1,17 @@
+const env = require('dotenv').config();
 const express = require('express');
 const app = express();
 const morgan = require('morgan');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const productRoutes = require('../api/routes/menu');
-const orderRoutes = require('../api/routes/order')
+const orderRoutes = require('../api/routes/order');
+
+mongoose
+  .connect(process.env.DATABASE_URL, { dbName: 'rest-pizza-shop', useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log("Connected to db"))
+  .catch(err => console.log(`Could not Connected to db ${process.env.DB_CONNECTION} `, err));
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
@@ -36,6 +43,7 @@ app.use((error, req, res, next) => {
     }
   })
 })
+
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => console.log(`app listening on port ${port}`))

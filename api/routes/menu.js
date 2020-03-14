@@ -1,20 +1,17 @@
 const express = require('express');
 const router = express.Router();
+const Product = require('../routes/models/products');
 
 router.get('/', (req, res, next) => {
-  res.status(200).json({
-    message: "handling GET requests to /products"
+  Product.find({}).then((product) => {
+    console.log("product coming from GET request", product)
+    res.status(200).send({ product })
   })
 })
 
 router.post('/', (req, res, next) => {
-  const product = {
-    name: req.body.name,
-    price: req.body.price
-  }
-  res.status(201).json({
-    message: "handling POST requests to /products",
-    createdProduct: product
+  Product.create(req.body).then((product) => {
+    res.status(201).send(product)
   })
 })
 
