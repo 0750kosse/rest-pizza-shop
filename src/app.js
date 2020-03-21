@@ -9,7 +9,7 @@ const productRoutes = require('../api/routes/menu');
 const orderRoutes = require('../api/routes/order');
 
 mongoose
-  .connect(process.env.DATABASE_URL, { dbName: 'rest-pizza-shop', useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(process.env.DATABASE_URL, { dbName: 'rest-pizza-shop', useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
   .then(() => console.log("Connected to db"))
   .catch(err => console.log(`Could not Connected to db ${process.env.DB_CONNECTION} `, err));
 
