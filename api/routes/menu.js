@@ -2,12 +2,17 @@ const express = require('express');
 const router = express.Router();
 const Product = require('../routes/models/products');
 
-router.get('/', (req, res, next) => {
+function findAllProducts() {
   Product.find({}).then((product) => {
     return product.length <= 0 ?
       res.status(404).json({ message: "No items found" }) :
       res.status(200).json({ product })
   })
+}
+
+router.get('/', (req, res, next) => {
+  const products = findAllProducts();
+  return products;
 })
 
 router.post('/', (req, res, next) => {
@@ -40,4 +45,7 @@ router.delete('/:menuId', (req, res, next) => {
     })
 })
 
-module.exports = router;
+export { 
+  router,
+  findAllProducts
+}
