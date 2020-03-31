@@ -11,10 +11,6 @@ const OrderSchema = mongoose.Schema({
   quantity: {
     type: Number,
     default: 1
-  },
-  description: {
-    type: String,
-    ref: 'Product'
   }
 
 });

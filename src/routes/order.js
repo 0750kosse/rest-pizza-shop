@@ -4,14 +4,15 @@ const Order = require('../../models/orders');
 const paths = require('../paths')
 
 function findAllOrders(req, res, next) {
-  Order.find({}).then(orders => {
-    return orders.length <= 0 ?
-      res.status(404).json({ message: "No orders yet" }) :
-      res.status(200).json({
-        count: orders.length,
-        orders
-      })
-  })
+  Order.find({}).populate('name')
+    .exec().then(orders => {
+      return orders.length <= 0 ?
+        res.status(404).json({ message: "No orders yet" }) :
+        res.status(200).json({
+          count: orders.length,
+          orders
+        })
+    })
     .catch(err => console.log(err))
 }
 
@@ -23,7 +24,13 @@ function addOrder(req, res, next) {
 }
 
 function getOrderDetails(req, res, next) {
-  Order.findById({ _id: req.params.orderId })
+  Order.findById(req.params.orderId)
+    .select('product quantity _id')
+    .populate(
+      'order', 'name'
+    ).exec()
+
+
     .then(uniqueOrder => {
       res.json({ uniqueOrder })
     })
@@ -31,6 +38,8 @@ function getOrderDetails(req, res, next) {
       res.json(err);
     });
 }
+
+
 
 function updateOrder(req, res, next) {
   Order.findByIdAndUpdate({ _id: req.params.orderId }, { $set: req.body }, { new: true }).then(order => {
