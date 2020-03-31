@@ -1,10 +1,9 @@
 const express = require('express');
 const router = express.Router();
-
 const Order = require('../../models/orders');
+const paths = require('../paths')
 
-
-router.get('/', (req, res, next) => {
+function findAllOrders(req, res, next) {
   Order.find({}).then(orders => {
     return orders.length <= 0 ?
       res.status(404).json({ message: "No orders yet" }) :
@@ -14,16 +13,16 @@ router.get('/', (req, res, next) => {
       })
   })
     .catch(err => console.log(err))
-})
+}
 
-router.post('/', (req, res, next) => {
+function addOrder(req, res, next) {
   Order.create(req.body).then(customerOrder => {
     res.status(201).json({ customerOrder })
   })
     .catch(err => console.log(err))
-})
+}
 
-router.get('/:orderId', (req, res, next) => {
+function getOrderDetails(req, res, next) {
   Order.findById({ _id: req.params.orderId })
     .then(uniqueOrder => {
       res.json({ uniqueOrder })
@@ -31,19 +30,18 @@ router.get('/:orderId', (req, res, next) => {
     .catch(function (err) {
       res.json(err);
     });
-})
+}
 
-router.patch('/:orderId', (req, res, next) => {
+function updateOrder(req, res, next) {
   Order.findByIdAndUpdate({ _id: req.params.orderId }, { $set: req.body }, { new: true }).then(order => {
-    console.log(order)
     res.status(200).json({
       message: "order updated",
       order
     })
   })
-})
+}
 
-router.delete('/:orderId', (req, res, next) => {
+function deleteOrder(req, res, next) {
   Order.findByIdAndRemove({ _id: req.params.orderId }).then(deletedOrder => {
     return (!deletedOrder) ?
       res.status(500).json("Cant delete unexistent ID´s") :
@@ -58,7 +56,13 @@ router.delete('/:orderId', (req, res, next) => {
         error: err
       })
     })
-})
+}
+
+router.get(paths.order, findAllOrders);
+router.get(paths.order + ':orderId', getOrderDetails);
+router.post(paths.order, addOrder);
+router.patch(paths.order + ':orderId', updateOrder)
+router.delete(paths.order + ':orderId', deleteOrder)
 
 module.exports = router;
 

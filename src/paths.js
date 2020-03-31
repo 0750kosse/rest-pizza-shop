@@ -1,6 +1,7 @@
 const paths = {
 
   menu: '/',
+  order: '/'
 
 
 }
