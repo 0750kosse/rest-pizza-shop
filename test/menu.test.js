@@ -5,8 +5,8 @@ chai.should();
 chai.use(sinonChai);
 const expect = chai.expect;
 
-import { findAllProducts } from '../api/routes/menu';
-const Product = require('../api/routes/models/products');
+import { findAllProducts } from '../src/routes/menu';
+const Product = require('../src/routes/menu');
 
 describe('Menu API', () => {
   it('should call find and return all products', () => {
