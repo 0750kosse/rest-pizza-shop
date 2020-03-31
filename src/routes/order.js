@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const Order = require('../routes/models/orders');
+const Order = require('../../models/orders');
+
 
 router.get('/', (req, res, next) => {
   Order.find({}).then(orders => {

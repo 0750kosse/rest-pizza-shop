@@ -5,8 +5,8 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-const productRoutes = require('../api/routes/menu');
-const orderRoutes = require('../api/routes/order');
+const productRoutes = require('./routes/menu');
+const orderRoutes = require('./routes/order');
 
 mongoose
   .connect(process.env.DATABASE_URL, { dbName: 'rest-pizza-shop', useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
@@ -44,6 +44,6 @@ app.use((error, req, res, next) => {
   })
 })
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3050;
 
 app.listen(port, () => console.log(`app listening on port ${port}`))
