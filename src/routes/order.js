@@ -5,6 +5,7 @@ const paths = require('../paths')
 
 function findAllOrders(req, res, next) {
   Order.find({})
+    .populate('product')
     .then(orders => {
       return orders.length <= 0 ?
         res.status(404).json({ message: "No orders yet" }) :

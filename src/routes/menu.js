@@ -1,7 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const Product = require('../../models/products');
-const paths = require('../paths')
+const paths = require('../paths');
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './uploads')
+  },
+  filename: function (req, file, cb) {
+    cb(null, new Date().toISOString() + file.originalname)
+  }
+});
+
+const upload = multer({ storage: storage })
 
 function findAllProducts(req, res, next) {
   Product.find({}).then((product) => {
@@ -12,6 +24,7 @@ function findAllProducts(req, res, next) {
 }
 
 function addProduct(req, res, next) {
+  console.log("req.file ", req.file)
   Product.create(req.body).then((product) => {
     res.status(201).send(product)
   })
@@ -44,7 +57,7 @@ function deleteProduct(req, res, next) {
 router.get(paths.menu, findAllProducts);
 router.get(paths.menu + ':menuId', getOneProduct)
 
-router.post(paths.menu, addProduct);
+router.post(paths.menu, upload.single('productImage'), addProduct);
 router.patch(paths.menu + ':menuId', updateProduct)
 router.delete(paths.menu + ':menuId', deleteProduct);
 
