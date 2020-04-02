@@ -24,9 +24,9 @@ function findAllProducts(req, res, next) {
 }
 
 function addProduct(req, res, next) {
-  console.log("req.file ", req.file)
+  req.body.productImage = req.file.path;
   Product.create(req.body).then((product) => {
-    res.status(201).send(product)
+    res.status(201).json({ product })
   })
 }
 
@@ -35,7 +35,7 @@ function getOneProduct(req, res, next) {
     return (!product) ? res.status(500).json({ message: "No item with such ID" }) : res.status(200).json({ product });
   })
     .catch(err => {
-      console.log(err.name, "Incorrect ID character length");
+      res.status(500).json({ message: "Incorrect ID character length" })
     })
 }
 

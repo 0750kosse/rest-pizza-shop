@@ -14,6 +14,7 @@ mongoose
   .catch(err => console.log(`Could not Connected to db ${process.env.DB_CONNECTION} `, err));
 
 app.use(morgan('dev'));
+app.use('/uploads', express.static('uploads'));
 app.use(bodyParser.json());
 
 app.use('/menu', productRoutes);
@@ -44,6 +45,6 @@ app.use((error, req, res, next) => {
   })
 })
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3050;
 
 app.listen(port, () => console.log(`app listening on port ${port}`))
