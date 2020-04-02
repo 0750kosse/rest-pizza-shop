@@ -18,7 +18,11 @@ function findAllOrders(req, res, next) {
 }
 
 function addOrder(req, res, next) {
-  Order.create(req.body).then(customerOrder => {
+  const order = {
+    product: req.body.product,
+    quantity: req.body.quantity
+  }
+  Order.create(order).then(customerOrder => {
     res.status(201).json({ customerOrder })
   })
     .catch(err => console.log(err))

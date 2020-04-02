@@ -24,8 +24,13 @@ function findAllProducts(req, res, next) {
 }
 
 function addProduct(req, res, next) {
-  req.body.productImage = req.file.path;
-  Product.create(req.body).then((product) => {
+  const myproduct = {
+    name: req.body.name,
+    price: req.body.price,
+    id: req.body._id,
+    productImage: req.file.path
+  }
+  Product.create(myproduct).then((product) => {
     res.status(201).json({ product })
   })
 }
