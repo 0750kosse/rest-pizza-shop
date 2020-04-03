@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 
 const productRoutes = require('./routes/menu');
 const orderRoutes = require('./routes/order');
+const userRoutes = require('./routes/user');
 
 mongoose
   .connect(process.env.DATABASE_URL, { dbName: 'rest-pizza-shop', useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
@@ -20,6 +21,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/menu', productRoutes);
 app.use('/order', orderRoutes);
+app.use('/signup', userRoutes);
+
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
@@ -46,6 +49,6 @@ app.use((error, req, res, next) => {
   })
 })
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3050;
 
 app.listen(port, () => console.log(`app listening on port ${port}`))

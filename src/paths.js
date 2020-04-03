@@ -1,6 +1,7 @@
 const paths = {
   menu: '/',
-  order: '/'
+  order: '/',
+  signup: '/'
 }
 
 module.exports = paths;
