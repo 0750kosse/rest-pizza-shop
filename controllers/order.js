@@ -1,7 +1,6 @@
-const express = require('express');
-const router = express.Router();
-const Order = require('../../models/orders');
-const paths = require('../paths')
+
+const Order = require('../models/orders');
+
 
 function findAllOrders(req, res, next) {
   Order.find({})
@@ -65,12 +64,14 @@ function deleteOrder(req, res, next) {
     })
 }
 
-router.get(paths.order, findAllOrders);
-router.get(paths.order + ':orderId', getOrderDetails);
-router.post(paths.order, addOrder);
-router.patch(paths.order + ':orderId', updateOrder)
-router.delete(paths.order + ':orderId', deleteOrder)
 
-module.exports = router;
+
+module.exports = {
+  findAllOrders,
+  addOrder,
+  getOrderDetails,
+  updateOrder,
+  deleteOrder
+};
 
 

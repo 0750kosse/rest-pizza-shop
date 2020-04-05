@@ -1,13 +1,11 @@
 const env = require('dotenv').config();
 const express = require('express');
 const app = express();
+const api = require('./routes/index');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-const productRoutes = require('./routes/menu');
-const orderRoutes = require('./routes/order');
-const userRoutes = require('./routes/user');
 
 mongoose
   .connect(process.env.DATABASE_URL, { dbName: 'rest-pizza-shop', useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
@@ -18,10 +16,8 @@ app.use(morgan('dev'));
 app.use('/uploads', express.static('uploads'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use('/api', api);
 
-app.use('/menu', productRoutes);
-app.use('/order', orderRoutes);
-app.use('/signup', userRoutes);
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');

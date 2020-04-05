@@ -1,7 +1,5 @@
-const express = require('express');
-const router = express.Router();
-const paths = require('../paths')
-const User = require('../../models/users');
+
+const User = require('../models/users');
 const bcrypt = require('bcrypt');
 
 function encryptPassword(req, res, next) {
@@ -14,7 +12,6 @@ function encryptPassword(req, res, next) {
         password: hash
       }
       User.create(myUser).then(user => {
-        console.log(user._id)
         res.status(201).json({
           message: "user created",
           user
@@ -44,18 +41,32 @@ function addUsers(req, res, next) {
   })
 }
 
-function deleteUser(req, res, next) {
-  User.findByIdAndRemove({ _id: req.params.userId }).then(deletedUser => {
-    return (!deletedUser) ? res.status(500).json({ message: "Cant delete unexistent users" }) :
-      res.status(200).json({ message: "deleted user", deletedUser })
+function userLogin(req, res, next) {
+  console.log("hellooooooo")
+  User.findOne({ email: req.body.email }).then(user => {
+    if (user.length < 1) {
+      res.status(401).json({ message: "Auth failed" })
+    }
   })
     .catch(err => {
       res.status(500).json({ message: "Incorrect ID character length" })
     })
 }
 
-router.get(paths.signup, getUsers);
-router.post(paths.signup, addUsers);
-router.delete(paths.signup + ':userId', deleteUser)
+function deleteUser(req, res, next) {
+  User.findByIdAndRemove({ _id: req.params.userId }).then(deletedUser => {
+    return (!deletedUser) ? res.status(500).json({ message: "Cant delete unexistent users" }) :
+      res.status(200).json({ message: "deleted user", deletedUser })
+  })
 
-module.exports = router;
+}
+
+
+
+module.exports = {
+  encryptPassword,
+  getUsers,
+  addUsers,
+  userLogin,
+  deleteUser
+};
