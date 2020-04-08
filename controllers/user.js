@@ -1,6 +1,8 @@
 
 const User = require('../models/users');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const env = require('dotenv').config();
 
 function encryptPassword(req, res, next) {
   bcrypt.hash(req.body.password, 10, (err, hash) => {
@@ -12,7 +14,6 @@ function encryptPassword(req, res, next) {
         password: hash
       }
       User.create(myUser).then(user => {
-        console.log(user)
         res.status(201).json({
           message: "user created",
           user
@@ -54,8 +55,17 @@ function userLogin(req, res, next) {
         });
       }
       if (result) {
+        const token = jwt.sign({
+          email: user.email,
+          userId: user._id
+        },
+          process.env.JWT_KEY,
+          {
+            expiresIn: '1h'
+          })
         return res.status(200).json({
-          message: "Auth successful"
+          message: "Auth successful",
+          token: token
         });
       }
       res.status(401).json({
