@@ -17,21 +17,21 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 
 api.get('/menu', menuController.findAllProducts);
-api.get('/menu' + ':menuId', menuController.getOneProduct)
+api.get('/menu/:menuId', menuController.getOneProduct)
 api.post('/menu', upload.single('productImage'), menuController.addProduct);
-api.patch('/menu' + ':menuId', menuController.updateProduct)
-api.delete('/menu' + ':menuId', menuController.deleteProduct);
+api.patch('/menu/:menuId', menuController.updateProduct)
+api.delete('/menu/:menuId', menuController.deleteProduct);
 
 
 api.get('/order', orderController.findAllOrders);
-api.get('/order' + ':orderId', orderController.getOrderDetails);
+api.get('/order/:orderId', orderController.getOrderDetails);
 api.post('/order', orderController.addOrder);
-api.patch('/order' + ':orderId', orderController.updateOrder)
-api.delete('/order' + ':orderId', orderController.deleteOrder)
+api.patch('/order/:orderId', orderController.updateOrder)
+api.delete('/order/:orderId', orderController.deleteOrder)
 
 api.get('/users', userController.getUsers);
 api.post('/signup', userController.addUsers);
-api.delete('/users' + ':userId', userController.deleteUser)
+api.delete('/users/:userId', userController.deleteUser)
 
 api.post('/login', userController.userLogin)
 

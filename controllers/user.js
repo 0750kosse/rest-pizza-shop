@@ -3,7 +3,7 @@ const User = require('../models/users');
 const bcrypt = require('bcrypt');
 
 function encryptPassword(req, res, next) {
-  bcrypt.hash(req.body.email, 10, (err, hash) => {
+  bcrypt.hash(req.body.password, 10, (err, hash) => {
     if (err) {
       return json(err)
     } else {
@@ -12,6 +12,7 @@ function encryptPassword(req, res, next) {
         password: hash
       }
       User.create(myUser).then(user => {
+        console.log(user)
         res.status(201).json({
           message: "user created",
           user
@@ -32,7 +33,7 @@ function addUsers(req, res, next) {
   User.find({ email: req.body.email }).then(user => {
     if (user.length >= 1) {
       return res.status(409).json({
-        message: "invalid",
+        message: "Something went wrong...",
         user
       })
     } else {
@@ -42,11 +43,25 @@ function addUsers(req, res, next) {
 }
 
 function userLogin(req, res, next) {
-  console.log("hellooooooo")
   User.findOne({ email: req.body.email }).then(user => {
-    if (user.length < 1) {
-      res.status(401).json({ message: "Auth failed" })
+    if (!user) {
+      return res.status(401).json({ message: "Auth failed ++++ " })
     }
+    bcrypt.compare(req.body.password, user.password, (err, result) => {
+      if (err) {
+        return res.status(401).json({
+          message: "Auth failed - err"
+        });
+      }
+      if (result) {
+        return res.status(200).json({
+          message: "Auth successful"
+        });
+      }
+      res.status(401).json({
+        message: "Auth failed"
+      });
+    });
   })
     .catch(err => {
       res.status(500).json({ message: "Incorrect ID character length" })
@@ -58,10 +73,7 @@ function deleteUser(req, res, next) {
     return (!deletedUser) ? res.status(500).json({ message: "Cant delete unexistent users" }) :
       res.status(200).json({ message: "deleted user", deletedUser })
   })
-
 }
-
-
 
 module.exports = {
   encryptPassword,
