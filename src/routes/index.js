@@ -3,6 +3,7 @@ const api = express.Router();
 const menuController = require('../../controllers/menu');
 const orderController = require('../../controllers/order');
 const userController = require('../../controllers/user');
+const checkAuth = require('../../middleware/check-auth')
 
 const multer = require('multer');
 
@@ -18,9 +19,9 @@ const upload = multer({ storage: storage })
 
 api.get('/menu', menuController.findAllProducts);
 api.get('/menu/:menuId', menuController.getOneProduct)
-api.post('/menu', upload.single('productImage'), menuController.addProduct);
-api.patch('/menu/:menuId', menuController.updateProduct)
-api.delete('/menu/:menuId', menuController.deleteProduct);
+api.post('/menu', checkAuth, upload.single('productImage'), menuController.addProduct);
+api.patch('/menu/:menuId', checkAuth, menuController.updateProduct)
+api.delete('/menu/:menuId', checkAuth, menuController.deleteProduct);
 
 
 api.get('/order', orderController.findAllOrders);
@@ -29,11 +30,11 @@ api.post('/order', orderController.addOrder);
 api.patch('/order/:orderId', orderController.updateOrder)
 api.delete('/order/:orderId', orderController.deleteOrder)
 
-api.get('/users', userController.getUsers);
+api.get('/users', checkAuth, userController.getUsers);
 api.post('/signup', userController.addUsers);
-api.delete('/users/:userId', userController.deleteUser)
+api.delete('/users/:userId', checkAuth, userController.deleteUser)
 
-api.post('/login', userController.userLogin)
+api.post('/login', checkAuth, userController.userLogin)
 
 
 module.exports = api;
