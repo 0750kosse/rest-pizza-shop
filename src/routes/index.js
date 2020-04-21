@@ -34,7 +34,7 @@ api.get('/users', checkAuth, userController.getUsers);
 api.post('/signup', userController.addUsers);
 api.delete('/users/:userId', checkAuth, userController.deleteUser)
 
-api.post('/login', checkAuth, userController.userLogin)
+api.post('/login', userController.userLogin)
 
 
 module.exports = api;

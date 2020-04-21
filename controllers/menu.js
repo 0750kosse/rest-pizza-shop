@@ -1,10 +1,10 @@
 const Product = require('../models/products');
 
 function findAllProducts(req, res, next) {
-  Product.find({}).then((product) => {
+  return Product.find({}).then((product) => {
     return product.length <= 0 ?
       res.status(404).json({ message: "No items found" }) :
-      res.status(200).json({ product })
+      res.status(200).json({ message: "one product", product })
   })
 }
 
