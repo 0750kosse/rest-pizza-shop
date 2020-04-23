@@ -43,17 +43,16 @@ describe('Menu API', () => {
       }).then(done);
     })
 
-    it.only('should call find and return 500 if other cases', (done) => {
-      const promise = new Promise((resolve, reject) => reject("oooops"), 500);
+    it('should call find and log the error if other cases(rejected promise)', (done) => {
+      const promise = new Promise((resolve, reject) => reject("oooops"), res);
       productStub.returns(promise);
 
-      findAllProducts(req, res, next).then(() => {
+      findAllProducts(req, res, next).then().catch(error => {
         expect(productStub).to.have.been.called;
         expect(res.status).to.have.been.called;
-        expect(res.status).to.have.been.called.calledWith(500);
-      })
-        .catch(error => { error })
-        .then(done);
+        expect(res.status).to.have.been.called.calledWith(404);
+        expect(error).to.equal('oooops')
+      }).then(done);
     })
   })
 })
