@@ -15,13 +15,16 @@ function addProduct(req, res, next) {
     id: req.body._id,
     productImage: req.file.path
   }
-  Product.create(myproduct).then((product) => {
-    res.status(201).json({ product })
+  return Product.create(myproduct).then((product) => {
+
+    return product.length <= 0 ?
+      res.status(404).json({ message: "No product added" }) :
+      res.status(201).json({ message: 'Product added', product })
   })
 }
 
 function getOneProduct(req, res, next) {
-  Product.findById({ _id: req.params.menuId }).then(product => {
+  return Product.findById({ _id: req.params.menuId }).then(product => {
     return (!product) ? res.status(500).json({ message: "No item with such ID" }) : res.status(200).json({ product });
   })
     .catch(err => {
@@ -30,13 +33,13 @@ function getOneProduct(req, res, next) {
 }
 
 function updateProduct(req, res, next) {
-  Product.findByIdAndUpdate({ _id: req.params.menuId }, { $set: req.body }, { new: true }).then(product => {
+  return Product.findByIdAndUpdate({ _id: req.params.menuId }, { $set: req.body }, { new: true }).then(product => {
     res.status(200).json(product)
   })
 }
 
 function deleteProduct(req, res, next) {
-  Product.findByIdAndRemove({ _id: req.params.menuId }).then(product => {
+  return Product.findByIdAndRemove({ _id: req.params.menuId }).then(product => {
     return (!product) ? res.status(500).json({ message: "Cant delete unexistent ID´s" }) : res.status(200).json(product);
   })
     .catch(err => {

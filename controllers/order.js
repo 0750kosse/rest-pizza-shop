@@ -3,7 +3,7 @@ const Order = require('../models/orders');
 
 
 function findAllOrders(req, res, next) {
-  Order.find({})
+  return Order.find({})
     .populate('product')
     .then(orders => {
       return orders.length <= 0 ?
@@ -21,14 +21,14 @@ function addOrder(req, res, next) {
     product: req.body.product,
     quantity: req.body.quantity
   }
-  Order.create(order).then(customerOrder => {
+  return Order.create(order).then(customerOrder => {
     res.status(201).json({ customerOrder })
   })
     .catch(err => console.log(err))
 }
 
 function getOrderDetails(req, res, next) {
-  Order.findById(req.params.orderId)
+  return Order.findById(req.params.orderId)
     .populate('product')
     .then(uniqueOrder => {
       res.json({ uniqueOrder })
@@ -39,7 +39,7 @@ function getOrderDetails(req, res, next) {
 }
 
 function updateOrder(req, res, next) {
-  Order.findByIdAndUpdate({ _id: req.params.orderId }, { $set: req.body }, { new: true }).then(order => {
+  return Order.findByIdAndUpdate({ _id: req.params.orderId }, { $set: req.body }, { new: true }).then(order => {
     res.status(200).json({
       message: "order updated",
       order
@@ -48,7 +48,7 @@ function updateOrder(req, res, next) {
 }
 
 function deleteOrder(req, res, next) {
-  Order.findByIdAndRemove({ _id: req.params.orderId }).then(deletedOrder => {
+  return Order.findByIdAndRemove({ _id: req.params.orderId }).then(deletedOrder => {
     return (!deletedOrder) ?
       res.status(500).json("Cant delete unexistent ID´s") :
       res.status(200).json({
