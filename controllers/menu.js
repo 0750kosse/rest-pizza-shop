@@ -44,7 +44,9 @@ function updateProduct(req, res, next) {
 
 function deleteProduct(req, res, next) {
   return Product.findByIdAndRemove({ _id: req.params.menuId }).then(product => {
-    return (!product) ? res.status(404).json({ message: "Cant delete unexistent ID´s" }) : res.status(200).json(product);
+    return (!product) ?
+      res.status(404).json({ message: "Cant delete unexistent ID´s" }) :
+      res.status(200).json({ message: 'Deleted product', product });
   })
     .catch(err => {
       res.status(500).json({ message: "Something went wrong deleting this product" })

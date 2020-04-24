@@ -7,7 +7,7 @@ chai.use(sinonChai);
 
 const expect = chai.expect;
 const Product = require('../models/products');
-import { findAllProducts, addProduct, getOneProduct, updateProduct } from '../controllers/menu';
+import { findAllProducts, addProduct, getOneProduct, updateProduct, deleteProduct } from '../controllers/menu';
 
 describe.only('Menu API', () => {
   let req, next;
@@ -19,6 +19,7 @@ describe.only('Menu API', () => {
   const createProductStub = sinon.stub(Product, 'create');
   const getOneProductStub = sinon.stub(Product, 'findById');
   const updateProductStub = sinon.stub(Product, 'findByIdAndUpdate');
+  const deleteProductStub = sinon.stub(Product, 'findByIdAndRemove');
 
 
   describe('findAllProducts', () => {
@@ -95,6 +96,7 @@ describe.only('Menu API', () => {
 
     })
   })
+
   describe('getOneProduct', () => {
     const product = {}
     const req = { body: { name: "name", price: "price" }, params: { _id: "id" } }
@@ -133,8 +135,7 @@ describe.only('Menu API', () => {
     })
   })
 
-
-  describe.only('updateProduct', () => {
+  describe('updateProduct', () => {
     const product = {}
     const req = { body: { name: "name", price: "price" }, params: { _id: "id" } };
 
@@ -156,6 +157,44 @@ describe.only('Menu API', () => {
         expect(updateProductStub).to.have.been.called;
         expect(res.status).to.have.been.calledWith(500)
         expect(res.json).to.have.been.called.calledWith({ message: "Something went wrong updating this product" })
+      }).then(done);
+    })
+  })
+
+  describe('deleteProduct', () => {
+    const product = {};
+    const req = { body: { name: "name", price: "price" }, params: { _id: "id" } };
+
+    it('should return 200 & delete the property with such ID', (done) => {
+      const promise = new Promise((resolve, reject) => resolve(product));
+      deleteProductStub.returns(promise);
+
+      deleteProduct(req, res, next).then(() => {
+        expect(deleteProductStub).to.have.been.called;
+        expect(res.status).to.have.been.calledWith(200);
+        expect(res.json).to.have.been.called.calledWith({ message: 'Deleted product', product })
+      }).then(done);
+    })
+
+    it('should return 404 if ID is not a match', (done) => {
+      const promise = new Promise((resolve, reject) => resolve(false));
+      deleteProductStub.returns(promise);
+
+      deleteProduct(req, res, next).then(() => {
+        expect(deleteProductStub).to.have.been.called;
+        expect(res.status).to.have.been.calledWith(404);
+        expect(res.json).to.have.been.calledWith({ message: "Cant delete unexistent ID´s" });
+      }).then(done);
+    })
+
+    it('should return 500 in any other cases', (done) => {
+      const promise = new Promise((resolve, reject) => reject());
+      deleteProductStub.returns(promise);
+
+      deleteProduct(req, res, next).then(() => {
+        expect(deleteProductStub).to.have.been.called;
+        expect(res.status).to.have.been.calledWith(500);
+        expect(res.json).to.have.been.calledWith({ message: "Something went wrong deleting this product" })
       }).then(done);
     })
   })
