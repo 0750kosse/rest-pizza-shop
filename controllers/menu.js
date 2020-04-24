@@ -16,7 +16,6 @@ function addProduct(req, res, next) {
     productImage: req.file.path
   }
   return Product.create(myproduct).then((product) => {
-
     return product.length <= 0 ?
       res.status(404).json({ message: "No product added" }) :
       res.status(201).json({ message: 'Product added', product })
@@ -25,29 +24,32 @@ function addProduct(req, res, next) {
 
 function getOneProduct(req, res, next) {
   return Product.findById({ _id: req.params.menuId }).then(product => {
-    return (!product) ? res.status(500).json({ message: "No item with such ID" }) : res.status(200).json({ product });
+    return (!product) ?
+      res.status(404).json({ message: "No item with such ID" }) :
+      res.status(200).json({ message: "yayyyy", product });
   })
     .catch(err => {
-      res.status(500).json({ message: "Incorrect ID character length" })
+      res.status(500).json({ message: "Something went wrong" })
     })
 }
 
 function updateProduct(req, res, next) {
   return Product.findByIdAndUpdate({ _id: req.params.menuId }, { $set: req.body }, { new: true }).then(product => {
-    res.status(200).json(product)
+    return res.status(200).json({ message: "Updated product", product })
   })
+    .catch(err => {
+      res.status(500).json({ message: "Something went wrong updating this product" })
+    })
 }
 
 function deleteProduct(req, res, next) {
   return Product.findByIdAndRemove({ _id: req.params.menuId }).then(product => {
-    return (!product) ? res.status(500).json({ message: "Cant delete unexistent ID´s" }) : res.status(200).json(product);
+    return (!product) ? res.status(404).json({ message: "Cant delete unexistent ID´s" }) : res.status(200).json(product);
   })
     .catch(err => {
-      res.status(500).json({ message: "Incorrect ID character length" })
+      res.status(500).json({ message: "Something went wrong deleting this product" })
     })
 }
-
-
 
 module.exports = {
   findAllProducts,
