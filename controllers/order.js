@@ -6,8 +6,7 @@ async function findAllOrders(req, res, next) {
     const orders = await Order.find({}).populate('product');
     if (!orders) return res.status(404).json({ message: "No orders yet" })
     else return res.status(200).json({ count: orders.length, orders })
-  }
-  catch (e) {
+  } catch (e) {
     next(e)
   }
 }
