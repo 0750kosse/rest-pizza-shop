@@ -9,7 +9,7 @@ const expect = chai.expect;
 const Product = require('../models/products');
 import { findAllProducts, addProduct, getOneProduct, updateProduct, deleteProduct } from '../controllers/menu';
 
-describe.only('Menu API', () => {
+describe('Menu API', () => {
   let req, next;
   let status = sinon.stub();
   let json = sinon.spy();
