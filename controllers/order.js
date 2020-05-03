@@ -40,7 +40,7 @@ async function updateOrder(req, res, next) {
   try {
     const order = await Order.findByIdAndUpdate({ _id: req.params.orderId }, { $set: req.body }, { new: true });
     if (!order) return res.status(404).json({ message: "Unable to update order with such ID" })
-    else return res.status(200).json({ message: "order updated", order })
+    else return res.status(200).json({ message: "Order updated", order })
   }
   catch (e) { next(e) }
 }

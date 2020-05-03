@@ -22,14 +22,13 @@ function addProduct(req, res, next) {
   })
 }
 
-async function getOneProduct(req, res, next) {
-  try {
-    const product = await Product.findById({ _id: req.params.menuId })
+function getOneProduct(req, res, next) {
+  return Product.findById({ _id: req.params.menuId }).then((product) => {
     if (!product) return res.status(404).json({ message: "No item with such ID" })
     else return res.status(200).json({ message: "yayyyy", product })
-  } catch (e) {
-    next(e)
-  }
+  }).catch(err => {
+    res.status(500).json({ message: "Something went wrong" })
+  })
 }
 
 function updateProduct(req, res, next) {
