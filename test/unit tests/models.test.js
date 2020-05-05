@@ -4,9 +4,9 @@ import sinonChai from 'sinon-chai';
 chai.should();
 chai.use(sinonChai);
 const expect = chai.expect;
-const Product = require('../models/products');
-const Order = require('../models/orders');
-const User = require('../models/users');
+const Product = require('../../models/products');
+const Order = require('../../models/orders');
+const User = require('../../models/users');
 
 describe('Mongoose models', () => {
 

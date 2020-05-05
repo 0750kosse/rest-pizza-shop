@@ -6,8 +6,8 @@ chai.should();
 chai.use(sinonChai);
 const sandbox = require('sinon').createSandbox();
 const expect = chai.expect;
-const Order = require('../models/orders');
-import { findAllOrders, addOrder, getOrderDetails, updateOrder, deleteOrder } from '../controllers/order';
+const Order = require('../../models/orders');
+import { findAllOrders, addOrder, getOrderDetails, updateOrder, deleteOrder } from '../../controllers/order';
 
 describe('Order API', () => {
   let req, res;

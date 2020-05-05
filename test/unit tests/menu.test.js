@@ -6,8 +6,8 @@ chai.should();
 chai.use(sinonChai);
 
 const expect = chai.expect;
-const Product = require('../models/products');
-import { findAllProducts, addProduct, getOneProduct, updateProduct, deleteProduct } from '../controllers/menu';
+const Product = require('../../models/products');
+import { findAllProducts, addProduct, getOneProduct, updateProduct, deleteProduct } from '../../controllers/menu';
 
 describe('Menu API', () => {
   let req, next;
