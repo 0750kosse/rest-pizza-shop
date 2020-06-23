@@ -10,6 +10,7 @@ function findAllProducts(req, res, next) {
 
 function addProduct(req, res, next) {
   const myproduct = {
+    category: req.body.category,
     name: req.body.name,
     price: req.body.price,
     id: req.body._id,
