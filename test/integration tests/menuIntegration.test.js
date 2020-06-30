@@ -6,7 +6,7 @@ chai.use(chaiHttp);
 const should = chai.should();
 const expect = chai.expect;
 
-describe.only('/GET products', () => {
+describe('/GET products', () => {
 
   it('it should GET all the products', (done) => {
     chai.request('http://localhost:3050')
