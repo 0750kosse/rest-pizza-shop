@@ -26,3 +26,7 @@ Should you wish to use the login & signup routes, you will need:
 - MongoDB & Mongoose
 - Multer for image uploads & JWT/bcrypt for authorization, user login and signup.
 - Mocha & Sinon for testing.
+
+## Contributors
+
+Special thanks to Toni - https://github.com/t0nin0s
