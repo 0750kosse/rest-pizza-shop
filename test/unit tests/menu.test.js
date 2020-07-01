@@ -43,7 +43,7 @@ describe('Menu API', () => {
       findAllProducts(req, res, next).then(() => {
         expect(productStub).to.have.been.called;
         expect(res.status).to.have.been.called;
-        expect(res.json).to.have.been.called.calledWith({ message: "one product", product });
+        expect(res.json).to.have.been.called.calledWith({ message: "Our menu: ", product });
         expect(res.status).to.have.been.called.calledWith(200);
       }).then(done);
     })
