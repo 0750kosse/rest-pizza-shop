@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 
 
 mongoose
-  .connect(process.env.DATABASE_URL, { dbName: 'rest-pizza-shop', useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
+  .connect(process.env.DATABASE_URL, { dbName: 'Dominos', useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
   .then(() => console.log("Connected to db"))
   .catch(err => console.log(`Could not Connected to db ${process.env.DB_CONNECTION} `, err));
 
