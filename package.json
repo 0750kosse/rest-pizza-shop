@@ -4,11 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "clean": "rm -rf build && mkdir build",
-    "build-babel": "babel -d ./build ./src -s",
     "test": "mocha --require @babel/register --recursive \"test/**/*.test.js\"",
-    "build": "npm run clean && npm run build-babel",
-    "start": "npm run build && node ./build/app.js",
+    "start": "nodemon --exec babel-node src/app.js",
     "heroku-postbuild": "npm run build"
   },
   "repository": {
@@ -22,7 +19,6 @@
   },
   "homepage": "https://github.com/0750kosse/rest-pizza-shop#readme",
   "dependencies": {
-    "babel-preset-env": "^1.7.0",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "chai-http": "^4.3.0",
@@ -37,12 +33,11 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.0.0-0",
-    "@babel/node": "^7.12.6",
+    "@babel/core": "^7.9.0",
+    "@babel/node": "^7.8.7",
     "@babel/plugin-transform-runtime": "^7.9.6",
     "@babel/preset-env": "^7.9.0",
     "@babel/register": "^7.9.0",
-    "babel-cli": "^6.26.0",
     "chai": "^4.2.0",
     "mocha": "^7.1.1",
     "sinon": "^9.0.1",
@@ -51,6 +46,6 @@
     "webpack": "^4.42.1"
   },
   "engines": {
-    "node": "8.11.2"
+    "node": "14.15.0"
   }
 }
