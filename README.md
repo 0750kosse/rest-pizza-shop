@@ -5,7 +5,7 @@ API for Domino´s Pizza
 
 Exercise consisting in creating an API to store, add, update and delete items, as well as to serve such data to the relevant UI. 
 
-Data can be seen at : https://manolopizza.herokuapp.com/api/menu.
+Data can be seen at : https://dominos-api.herokuapp.com/api/menu
 
 ## Instructions
 
