@@ -5,24 +5,36 @@ const orderController = require('../../controllers/order');
 const userController = require('../../controllers/user');
 const checkAuth = require('../../middleware/check-auth')
 
-const multer = require('multer');
+const aws = require("aws-sdk");
+const multer = require("multer");
+const multerS3 = require("multer-s3");
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, './uploads')
-  },
-  filename: function (req, file, cb) {
-    cb(null, new Date().toISOString() + file.originalname)
-  }
+aws.config.update({
+  secretAccessKey: process.env.S3_ACCESS_SECRET,
+  accessKeyId: process.env.S3_ACCESS_KEY,
+  region: "us-east-2",
 });
-const upload = multer({ storage: storage })
+
+const s3 = new aws.S3();
+
+const upload = multer({
+  storage: multerS3({
+    s3: s3,
+    acl: "public-read",
+    bucket: "pizzadominos-menu-images",
+    key: (req, file, cb) => {
+      console.log("key info is :", file)
+      cb(null, file.originalname);
+    },
+  }),
+});
+
 
 api.get('/menu', menuController.findAllProducts);
 api.get('/menu/:menuId', menuController.getOneProduct)
 api.post('/menu', checkAuth, upload.single('productImage'), menuController.addProduct);
 api.patch('/menu/:menuId', checkAuth, menuController.updateProduct)
 api.delete('/menu/:menuId', checkAuth, menuController.deleteProduct);
-
 
 api.get('/order', orderController.findAllOrders);
 api.get('/order/:orderId', orderController.getOrderDetails);
@@ -36,5 +48,6 @@ api.delete('/users/:userId', checkAuth, userController.deleteUser)
 
 api.post('/login', userController.userLogin)
 
-
 module.exports = api;
+
+
