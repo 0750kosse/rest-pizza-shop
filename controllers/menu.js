@@ -14,8 +14,9 @@ function addProduct(req, res, next) {
     name: req.body.name,
     price: req.body.price,
     id: req.body._id,
-    productImage: req.file.path
+    productImage: req.file.location
   }
+  //req.file.location: provides image aws s3 url, which is now stored in mongoatlas
   return Product.create(myproduct).then((product) => {
     return product.length <= 0 ?
       res.status(404).json({ message: "No product added" }) :
